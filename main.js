@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hoverTimeout = setTimeout(() => {
             loginButton.classList.add('show-reset');
             isReset = true;
-        }, 300);
+        }, 500);
     });
     
     // ホバー終了
