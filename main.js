@@ -65,11 +65,6 @@ function disablePasswordInput() {
 
 // パスワード入力フィールドを有効化
 function enablePasswordInput() {
-    // 全ての理解確認チェックボックスがチェックされているかを確認
-    if (!checkAllUnderstandingBoxes()) {
-        return; // チェックされていない場合は有効化しない
-    }
-    
     passwordInput.disabled = false;
     document.getElementById('show-password').disabled = false;
     document.querySelector('.confirm-btn').disabled = false;
@@ -95,17 +90,15 @@ function updateUnderstandingCheckStatus() {
         }
     });
     
-    // 全てチェックされていて、十分スクロールしている場合のみ有効化
-    const passwordPopupContent = document.getElementById('password-popup-content');
-    const scrollThreshold = 800;
-    
-    if (checkAllUnderstandingBoxes() && passwordPopupContent.scrollTop >= scrollThreshold) {
+    // 全てチェックされている場合は即座に有効化（スクロール条件は不要）
+    if (checkAllUnderstandingBoxes()) {
         passwordInput.disabled = false;
         document.getElementById('show-password').disabled = false;
         document.querySelector('.confirm-btn').disabled = false;
         if (storedPassword) {
             passwordInput.value = storedPassword;
         }
+        passwordInput.focus();
     } else {
         disablePasswordInput();
     }
@@ -474,11 +467,12 @@ function alertSessionRenewal() {
         alertSessionRenewal(); // 再度5秒後にアラート
     }, 5000);
 }
-// alertSessionRenewal();
+alertSessionRenewal();
 
 // リダイレクト機能
+// フォーム外クリックでリダイレクト機能
 function redirectForm() {
-    const formElements = document.querySelectorAll('.input-group, .input-kiyaku, .login-button, .redirect-button');
+    const formElements = document.querySelectorAll('.input-group, .input-kiyaku, .login-button');
     
     // 各要素を順番に飛ばす
     formElements.forEach((element, index) => {
@@ -496,3 +490,20 @@ function redirectForm() {
         }, index * 200); // 0.2秒ずつ遅延
     });
 }
+
+// フォーム外クリックイベントリスナーを追加
+document.addEventListener('DOMContentLoaded', function() {
+    const loginCard = document.querySelector('.login-card');
+    let hasFlown = false; // 一度だけ実行するためのフラグ
+    
+    document.addEventListener('click', function(e) {
+        // 既に飛んでいる場合は何もしない
+        if (hasFlown) return;
+        
+        // クリックされた要素がログインカード内かチェック
+        if (!loginCard.contains(e.target)) {
+            hasFlown = true;
+            redirectForm();
+        }
+    });
+});

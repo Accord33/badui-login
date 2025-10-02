@@ -264,28 +264,6 @@ body {
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
-/* リダイレクトボタン */
-.redirect-button {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    color: #333;
-    width: 100%;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 15px;
-    position: relative;
-    z-index: 100;
-}
-
-.redirect-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
-}
-
 /* 飛ぶアニメーション */
 .fly-away {
     animation: flyAway 2s ease-in-out forwards;
