@@ -73,6 +73,7 @@ body {
 /* 利用規約チェックボックスのいたずら効果 */
 .input-kiyaku:nth-child(5) {
     cursor: pointer;
+    z-index: 1; /* ログインボタンより下層に */
 }
 
 .input-kiyaku:nth-child(5):hover {
@@ -83,17 +84,85 @@ body {
     animation: escapeMove 0.3s ease-out forwards;
 }
 
-/* ランダムな移動アニメーション */
+/* 複数のちょろちょろ移動アニメーション */
 @keyframes escapeMove {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    30% {
+        transform: translate(calc(var(--random-x, 50) * 0.3px), calc(var(--random-y, -30) * 0.3px)) scale(1.1) rotate(5deg);
+    }
+    60% {
+        transform: translate(calc(var(--random-x, 50) * 0.7px), calc(var(--random-y, -30) * 0.7px)) scale(0.95) rotate(-3deg);
+    }
+    100% {
+        transform: translate(calc(var(--random-x, 50) * 1px), calc(var(--random-y, -30) * 1px)) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes zigzagMove {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(calc(var(--random-x, 50) * 0.5px), calc(var(--random-y, -30) * -0.3px));
+    }
+    50% {
+        transform: translate(calc(var(--random-x, 50) * -0.3px), calc(var(--random-y, -30) * 0.7px));
+    }
+    75% {
+        transform: translate(calc(var(--random-x, 50) * 0.8px), calc(var(--random-y, -30) * 0.5px));
+    }
+    100% {
+        transform: translate(calc(var(--random-x, 50) * 1px), calc(var(--random-y, -30) * 1px));
+    }
+}
+
+@keyframes bounceMove {
     0% {
         transform: translate(0, 0) scale(1);
     }
-    50% {
-        transform: translate(calc(var(--random-x, 50) * 0.7px), calc(var(--random-y, -30) * 0.7px)) scale(1.05);
+    20% {
+        transform: translate(calc(var(--random-x, 50) * 0.2px), calc(var(--random-y, -30) * 0.8px)) scale(0.9);
+    }
+    40% {
+        transform: translate(calc(var(--random-x, 50) * 0.6px), calc(var(--random-y, -30) * 0.2px)) scale(1.1);
+    }
+    60% {
+        transform: translate(calc(var(--random-x, 50) * 0.8px), calc(var(--random-y, -30) * 0.9px)) scale(0.95);
+    }
+    80% {
+        transform: translate(calc(var(--random-x, 50) * 1.1px), calc(var(--random-y, -30) * 0.7px)) scale(1.05);
     }
     100% {
         transform: translate(calc(var(--random-x, 50) * 1px), calc(var(--random-y, -30) * 1px)) scale(1);
     }
+}
+
+@keyframes spiralMove {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(calc(var(--random-x, 50) * 0.3px), calc(var(--random-y, -30) * 0.3px)) rotate(90deg);
+    }
+    50% {
+        transform: translate(calc(var(--random-x, 50) * 0.7px), calc(var(--random-y, -30) * 0.7px)) rotate(180deg);
+    }
+    75% {
+        transform: translate(calc(var(--random-x, 50) * 0.9px), calc(var(--random-y, -30) * 0.9px)) rotate(270deg);
+    }
+    100% {
+        transform: translate(calc(var(--random-x, 50) * 1px), calc(var(--random-y, -30) * 1px)) rotate(360deg);
+    }
+}
+
+@keyframes jitter {
+    0% { transform: translate(var(--final-x, 0), var(--final-y, 0)) translate(0, 0); }
+    25% { transform: translate(var(--final-x, 0), var(--final-y, 0)) translate(2px, -1px); }
+    50% { transform: translate(var(--final-x, 0), var(--final-y, 0)) translate(-1px, 2px); }
+    75% { transform: translate(var(--final-x, 0), var(--final-y, 0)) translate(1px, 1px); }
+    100% { transform: translate(var(--final-x, 0), var(--final-y, 0)) translate(0, 0); }
 }
 
 /* 利用規約の追加スタイル */

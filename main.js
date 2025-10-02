@@ -158,35 +158,56 @@ document.addEventListener('DOMContentLoaded', function() {
         moveCount++;
         isMoving = true;
         
-        // ランダムな移動距離を生成（ログインボタンを避ける）
-        const randomX = (Math.random() - 0.5) * 120; // -60px to 60px（縮小）
-        let randomY = (Math.random() - 0.5) * 80; // -40px to 40px（縮小）
+        // より大きなランダム移動距離を生成
+        const randomX = (Math.random() - 0.5) * 280; // -140px to 140px（拡大）
+        let randomY = (Math.random() - 0.5) * 120; // -60px to 60px（拡大）
         
         // 下方向への移動を制限（ログインボタンエリアを避ける）
-        if (randomY > 0) {
-            randomY = -Math.abs(randomY); // 常に上方向または横方向に移動
+        if (randomY > 20) {
+            randomY = -Math.abs(randomY * 0.8); // 上方向に移動
         }
         
-        // より複雑な移動パターン
-        let finalX = randomX;
-        let finalY = randomY;
+        // ランダムに斜め移動を追加
+        const diagonalFactor = Math.random() * 1.5;
+        let finalX = randomX * diagonalFactor;
+        let finalY = randomY * diagonalFactor;
         
-        // 移動回数に応じて移動距離を調整（ただし制限範囲内）
-        if (moveCount > 3) {
-            finalX *= 1.2; // 1.5から1.2に縮小
-            finalY *= 1.2; // 1.5から1.2に縮小
+        // 移動回数に応じてさらにワイルドに
+        if (moveCount > 2) {
+            finalX *= 1.3;
+            finalY *= 1.2;
         }
         
-        // 安全な範囲に制限（ログインボタンを避ける）
-        finalX = Math.max(-70, Math.min(70, finalX));
-        finalY = Math.max(-50, Math.min(-5, finalY)); // 下限を-5に設定（下に行かない）
+        if (moveCount > 5) {
+            // 5回目以降はより予測不可能に
+            finalX += (Math.random() - 0.5) * 100;
+            finalY += (Math.random() - 0.5) * 60;
+        }
+        
+        // カードの境界を考慮した範囲制限（より広い範囲）
+        finalX = Math.max(-120, Math.min(120, finalX));
+        finalY = Math.max(-80, Math.min(15, finalY)); // 少し下にも行けるように
         
         // CSS変数を設定
         termsCheckboxContainer.style.setProperty('--random-x', finalX);
         termsCheckboxContainer.style.setProperty('--random-y', finalY);
         
-        // アニメーション適用
-        termsCheckboxContainer.style.animation = 'escapeMove 0.3s ease-out forwards';
+        // アニメーション適用（ランダムなアニメーション選択）
+        const animations = ['escapeMove', 'zigzagMove', 'bounceMove', 'spiralMove'];
+        const selectedAnimation = animations[Math.floor(Math.random() * animations.length)];
+        termsCheckboxContainer.style.animation = `${selectedAnimation} 0.4s ease-out forwards`;
+        
+        // ちょろちょろ感を出すため、移動後に小刻みに揺れる
+        setTimeout(() => {
+            termsCheckboxContainer.style.animation += ', jitter 0.2s ease-in-out infinite';
+        }, 400);
+        
+        // 揺れを止める
+        setTimeout(() => {
+            const currentTransform = `translate(${finalX}px, ${finalY}px)`;
+            termsCheckboxContainer.style.animation = 'none';
+            termsCheckboxContainer.style.transform = currentTransform;
+        }, 800);
         
         // 移動後のテキスト変更
         const label = termsCheckboxContainer.querySelector('label');
@@ -221,13 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (label) {
                     label.innerHTML = '<a href="/index.html">利用規約</a>を読んでいただき、ありがとうございます！';
                 }
-            }, 300);
+            }, 400);
             return;
         }
         
         setTimeout(() => {
             isMoving = false;
-        }, 300);
+        }, 400);
     }
     
     // ホバーイベント
