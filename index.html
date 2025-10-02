@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="login-card">
+        <h1>ログイン</h1>
+        <form>
+            <!-- ユーザーネーム入力ボタン -->
+            <div class="input-group">
+                <p>ユーザー名</p>
+                <button type="button" class="username-input-btn" onclick="openUsernamePopup()">
+                    <span id="username-display">ユーザー名を入力</span>
+                    <span class="edit-icon">✏️</span>
+                </button>
+            </div>
+            
+            <!-- パスワード入力ボタン -->
+            <div class="input-group">
+                <p>パスワード</p>
+                <button type="button" class="password-input-btn" onclick="openPasswordPopup()">
+                    <span id="password-display">パスワードを入力</span>
+                    <span class="edit-icon">🔒</span>
+                </button>
+            </div>
+            
+            <div class="input-kiyaku">
+                <input type="checkbox" name="remember" id="remember">
+                <p><label for="remember">ログイン状態を保持する</label></p>
+            </div>
+            
+            <div class="input-kiyaku">
+                <input type="checkbox" name="terms" id="terms">
+                <p><label for="terms"><a href="/index.html">利用規約</a>に同意する</label></p>
+            </div>
+
+            <button type="button" class="login-button">ログイン</button>
+        </form>
+    </div>
+
+    <!-- ユーザーネーム入力ポップアップ -->
+    <div class="popup-overlay" id="username-popup-overlay" onclick="closeUsernamePopup()">
+        <div class="popup-card" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <h3>ユーザー名を入力</h3>
+                <button class="close-btn" onclick="closeUsernamePopup()">×</button>
+            </div>
+            <div class="popup-content">
+                <input type="text" id="username-input" placeholder="ユーザー名を入力してください">
+                <div class="popup-actions">
+                    <button class="cancel-btn" onclick="closeUsernamePopup()">キャンセル</button>
+                    <button class="confirm-btn" onclick="confirmUsername()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- パスワード入力ポップアップ -->
+    <div class="popup-overlay" id="password-popup-overlay" onclick="closePasswordPopup()">
+        <div class="popup-card" onclick="event.stopPropagation()">
+            <div class="popup-header">
+                <h3>パスワードを入力</h3>
+                <button class="close-btn" onclick="closePasswordPopup()">×</button>
+            </div>
+            <div class="popup-content">
+                <input type="password" id="password-input" placeholder="パスワードを入力してください">
+                <div class="password-options">
+                    <label class="toggle-password">
+                        <input type="checkbox" id="show-password" onchange="togglePasswordVisibility()">
+                        <span>パスワードを表示</span>
+                    </label>
+                </div>
+                <div class="popup-actions">
+                    <button class="cancel-btn" onclick="closePasswordPopup()">キャンセル</button>
+                    <button class="confirm-btn" onclick="confirmPassword()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
