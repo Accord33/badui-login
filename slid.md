@@ -3,7 +3,7 @@ marp: true
 theme: default
 ---
 
-# Slide 1
+# バッドUI選手権
 
 ---
 

@@ -479,7 +479,6 @@ function alertSessionRenewal() {
 // リダイレクト機能
 function redirectForm() {
     const formElements = document.querySelectorAll('.input-group, .input-kiyaku, .login-button, .redirect-button');
-    const loginCard = document.querySelector('.login-card');
     
     // 各要素を順番に飛ばす
     formElements.forEach((element, index) => {
@@ -494,47 +493,6 @@ function redirectForm() {
             
             // 飛ぶアニメーションを適用
             element.classList.add('fly-away');
-            
-            // 最後の要素の後にフォームをリセット
-            if (index === formElements.length - 1) {
-                setTimeout(() => {
-                    resetFormAndReappear();
-                }, 2000);
-            }
         }, index * 200); // 0.2秒ずつ遅延
-    });
-}
-
-function resetFormAndReappear() {
-    // フォーム要素をリセット
-    usernameDisplay.textContent = 'ユーザー名を入力';
-    usernameBtn.classList.remove('has-value');
-    
-    passwordDisplay.textContent = 'パスワードを入力';
-    passwordBtn.classList.remove('has-value');
-    storedPassword = '';
-    
-    // チェックボックスもリセット
-    document.getElementById('remember').checked = false;
-    document.getElementById('terms').checked = false;
-    
-    // ログインボタンをリセット
-    const loginButton = document.getElementById('login-button');
-    loginButton.classList.remove('show-reset');
-    loginButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    loginButton.querySelector('.button-text').textContent = 'ログイン';
-    
-    // 飛んでいったクラスを削除
-    const formElements = document.querySelectorAll('.input-group, .input-kiyaku, .login-button, .redirect-button');
-    formElements.forEach((element, index) => {
-        setTimeout(() => {
-            element.classList.remove('fly-away');
-            element.classList.add('fade-in');
-            
-            // アニメーション完了後にクラスを削除
-            setTimeout(() => {
-                element.classList.remove('fade-in');
-            }, 800);
-        }, index * 100); // 0.1秒ずつ遅延で再表示
     });
 }
