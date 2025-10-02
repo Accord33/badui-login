@@ -217,6 +217,44 @@ body {
     margin-top: 10px;
     position: relative;
     z-index: 100; /* ログインボタンを最前面に */
+    overflow: hidden;
+}
+
+.login-button .button-text,
+.login-button .reset-text {
+    position: relative;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.login-button .reset-text {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: -15px -20px;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.login-button.show-reset .button-text {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.login-button.show-reset .reset-text {
+    top: 0;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.login-button.show-reset {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
 }
 
 .login-button:hover {

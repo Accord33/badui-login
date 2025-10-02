@@ -126,23 +126,118 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ログインボタンのクリックイベント
-document.querySelector('.login-button').addEventListener('click', function() {
-    const username = usernameDisplay.textContent;
+// ログインボタンの動作
+document.addEventListener('DOMContentLoaded', function() {
+    const loginButton = document.getElementById('login-button');
+    let hoverTimeout = null;
+    let isReset = false;
+    let quickClickCount = 0;
     
-    if (username === 'ユーザー名を入力') {
-        alert('ユーザー名を入力してください');
-        return;
+    // ホバー開始
+    loginButton.addEventListener('mouseenter', function() {
+        if (isReset) return;
+        
+        // 0.5秒後にリセットモードに変更
+        hoverTimeout = setTimeout(() => {
+            loginButton.classList.add('show-reset');
+            isReset = true;
+        }, 500);
+    });
+    
+    // ホバー終了
+    loginButton.addEventListener('mouseleave', function() {
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = null;
+        }
+        
+        // リセットモードを解除（少し遅延を入れる）
+        setTimeout(() => {
+            loginButton.classList.remove('show-reset');
+            isReset = false;
+        }, 200);
+    });
+    
+    // クリックイベント
+    loginButton.addEventListener('click', function() {
+        const username = usernameDisplay.textContent;
+        
+        if (username === 'ユーザー名を入力') {
+            alert('ユーザー名を入力してください');
+            return;
+        }
+        
+        if (!storedPassword) {
+            alert('パスワードを入力してください');
+            return;
+        }
+        
+        // リセットモードの場合
+        if (isReset) {
+            performReset();
+            return;
+        }
+        
+        // 素早いクリック（トラップ回避）を検知
+        quickClickCount++;
+        setTimeout(() => {
+            quickClickCount = 0;
+        }, 1000);
+        
+        if (quickClickCount >= 3) {
+            // 3回以上の素早いクリックで正常ログイン
+            performLogin();
+        } else {
+            // 通常のクリックはリセットに変更
+            if (Math.random() < 0.7) { // 70%の確率でリセット
+                performReset();
+            } else {
+                performLogin();
+            }
+        }
+    });
+    
+    function performReset() {
+        // 入力内容をリセット
+        usernameDisplay.textContent = 'ユーザー名を入力';
+        usernameBtn.classList.remove('has-value');
+        
+        passwordDisplay.textContent = 'パスワードを入力';
+        passwordBtn.classList.remove('has-value');
+        storedPassword = '';
+        
+        // チェックボックスもリセット
+        document.getElementById('remember').checked = false;
+        document.getElementById('terms').checked = false;
+        
+        // リセットエフェクト
+        loginButton.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            loginButton.style.transform = 'scale(1)';
+        }, 150);
+        
+        alert('入力内容がリセットされました！\n💡ヒント: 素早く3回クリックしてみてください...');
+        
+        // リセットモードを解除
+        setTimeout(() => {
+            loginButton.classList.remove('show-reset');
+            isReset = false;
+        }, 500);
     }
     
-    if (!storedPassword) {
-        alert('パスワードを入力してください');
-        return;
+    function performLogin() {
+        // 正常なログイン処理
+        console.log('ログイン成功:', { username: usernameDisplay.textContent, password: storedPassword });
+        
+        // ログイン成功エフェクト
+        loginButton.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+        loginButton.querySelector('.button-text').textContent = '成功！';
+        
+        setTimeout(() => {
+            // /home.htmlに移動
+            window.location.href = '/home.html';
+        }, 1000);
     }
-    
-    // ここで実際のログイン処理を行う
-    console.log('ログイン試行:', { username, password: storedPassword });
-    alert(`ログイン試行中...\nユーザー名: ${username}`);
 });
 
 // 利用規約チェックボックスのいたずら効果
