@@ -10,6 +10,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* 飛んでいく要素が画面外に出るため */
 }
 
 .login-card {
@@ -261,6 +262,98 @@ body {
 .login-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* リダイレクトボタン */
+.redirect-button {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    color: #333;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    position: relative;
+    z-index: 100;
+}
+
+.redirect-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
+}
+
+/* 飛ぶアニメーション */
+.fly-away {
+    animation: flyAway 2s ease-in-out forwards;
+    z-index: 1000;
+    position: relative;
+}
+
+.fly-away::before {
+    content: '🪶✨';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    animation: wingFlap 0.2s ease-in-out infinite;
+}
+
+@keyframes flyAway {
+    0% {
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    10% {
+        transform: translateY(-30px) translateX(10px) scale(1.05) rotate(-2deg);
+        opacity: 0.95;
+    }
+    30% {
+        transform: translateY(-100px) translateX(var(--fly-x, 200px)) scale(0.9) rotate(10deg);
+        opacity: 0.8;
+    }
+    60% {
+        transform: translateY(var(--fly-y, -300px)) translateX(var(--fly-x, 200px)) scale(0.6) rotate(25deg);
+        opacity: 0.5;
+    }
+    90% {
+        transform: translateY(calc(var(--fly-y, -300px) - 200px)) translateX(calc(var(--fly-x, 200px) + 100px)) scale(0.3) rotate(45deg);
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateY(calc(var(--fly-y, -300px) - 300px)) translateX(calc(var(--fly-x, 200px) + 200px)) scale(0.1) rotate(60deg);
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@keyframes wingFlap {
+    0%, 100% {
+        transform: translateX(-50%) rotateY(0deg);
+    }
+    50% {
+        transform: translateX(-50%) rotateY(180deg);
+    }
+}
+
+/* フォームリセット後の再表示アニメーション */
+.fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ユーザーネーム・パスワード入力ボタン */
