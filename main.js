@@ -34,25 +34,22 @@ function openPasswordPopup() {
     const passwordPopupContent = document.getElementById('password-popup-content');
     passwordPopupContent.scrollTop = 0;
     
+    // 理解確認チェックボックスをリセット
+    resetUnderstandingCheckboxes();
+    
     // 入力フィールドを無効化
     disablePasswordInput();
     
     // スクロールイベントリスナーを追加
     passwordPopupContent.addEventListener('scroll', handlePasswordPopupScroll);
     
+    // 理解確認チェックボックスのイベントリスナーを追加
+    setupUnderstandingCheckboxListeners();
+    
     // 少し遅延を入れてからフォーカスを当てる（スクロール後に有効になる）
     setTimeout(() => {
         checkScrollAndEnableInput();
     }, 100);
-    
-    // 現在の値があれば入力フィールドに設定（有効化後に）
-    if (storedPassword) {
-        setTimeout(() => {
-            if (!passwordInput.disabled) {
-                passwordInput.value = storedPassword;
-            }
-        }, 200);
-    }
     
     // パスワード表示チェックボックスをリセット
     document.getElementById('show-password').checked = false;
@@ -68,10 +65,50 @@ function disablePasswordInput() {
 
 // パスワード入力フィールドを有効化
 function enablePasswordInput() {
+    // 全ての理解確認チェックボックスがチェックされているかを確認
+    if (!checkAllUnderstandingBoxes()) {
+        return; // チェックされていない場合は有効化しない
+    }
+    
     passwordInput.disabled = false;
     document.getElementById('show-password').disabled = false;
     document.querySelector('.confirm-btn').disabled = false;
     passwordInput.focus();
+}
+
+// 理解確認チェックボックスの状態をチェック
+function checkAllUnderstandingBoxes() {
+    const checkboxes = document.querySelectorAll('.understanding-checkbox');
+    return Array.from(checkboxes).every(checkbox => checkbox.checked);
+}
+
+// 理解確認チェックボックスの状態更新
+function updateUnderstandingCheckStatus() {
+    const checkboxes = document.querySelectorAll('.understanding-checkbox');
+    
+    checkboxes.forEach(checkbox => {
+        const container = checkbox.closest('.understanding-check');
+        if (checkbox.checked) {
+            container.classList.add('checked');
+        } else {
+            container.classList.remove('checked');
+        }
+    });
+    
+    // 全てチェックされていて、十分スクロールしている場合のみ有効化
+    const passwordPopupContent = document.getElementById('password-popup-content');
+    const scrollThreshold = 800;
+    
+    if (checkAllUnderstandingBoxes() && passwordPopupContent.scrollTop >= scrollThreshold) {
+        passwordInput.disabled = false;
+        document.getElementById('show-password').disabled = false;
+        document.querySelector('.confirm-btn').disabled = false;
+        if (storedPassword) {
+            passwordInput.value = storedPassword;
+        }
+    } else {
+        disablePasswordInput();
+    }
 }
 
 // スクロール検知とフィールド有効化
@@ -83,7 +120,7 @@ function checkScrollAndEnableInput() {
     const passwordPopupContent = document.getElementById('password-popup-content');
     const scrollThreshold = 800; // 800px スクロールしたら有効化（200px → 800px）
     
-    if (passwordPopupContent.scrollTop >= scrollThreshold) {
+    if (passwordPopupContent.scrollTop >= scrollThreshold && checkAllUnderstandingBoxes()) {
         enablePasswordInput();
         // イベントリスナーを削除（一度有効化したら再度無効化しない）
         passwordPopupContent.removeEventListener('scroll', handlePasswordPopupScroll);
@@ -106,6 +143,28 @@ function closePasswordPopup() {
     // スクロールイベントリスナーを削除
     const passwordPopupContent = document.getElementById('password-popup-content');
     passwordPopupContent.removeEventListener('scroll', handlePasswordPopupScroll);
+    
+    // 理解確認チェックボックスをリセット
+    resetUnderstandingCheckboxes();
+}
+
+// 理解確認チェックボックスをリセット
+function resetUnderstandingCheckboxes() {
+    const checkboxes = document.querySelectorAll('.understanding-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.closest('.understanding-check').classList.remove('checked');
+        // イベントリスナーを削除
+        checkbox.removeEventListener('change', updateUnderstandingCheckStatus);
+    });
+}
+
+// 理解確認チェックボックスのイベントリスナーを設定
+function setupUnderstandingCheckboxListeners() {
+    const checkboxes = document.querySelectorAll('.understanding-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateUnderstandingCheckStatus);
+    });
 }
 
 // ユーザーネームを確定する
@@ -408,3 +467,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function alertSessionRenewal() {
+    window.setTimeout(function(){
+        alert('セッションを更新しますか？');
+        alertSessionRenewal(); // 再度5秒後にアラート
+    }, 5000);
+}
+alertSessionRenewal();

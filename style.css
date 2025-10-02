@@ -471,6 +471,44 @@ body {
     background: #a1a1a1;
 }
 
+/* 理解確認チェックボックス */
+.understanding-check {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.understanding-check:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.understanding-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+.understanding-check label {
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    margin: 0;
+    font-size: 14px;
+}
+
+.understanding-check.checked {
+    background: #e8f5e8;
+    border-color: #4CAF50;
+}
+
 /* 無効状態のスタイル */
 .password-input-section input:disabled,
 .password-input-section button:disabled {
