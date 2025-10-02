@@ -403,6 +403,90 @@ body {
     padding: 25px;
 }
 
+/* パスワードポップアップ専用のスクロールスタイル */
+.password-popup-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.scroll-content {
+    padding: 25px;
+    min-height: 600px; /* スクロールが必要になる高さ */
+}
+
+.password-instructions {
+    color: #333;
+    line-height: 1.6;
+}
+
+.password-instructions h4 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.password-instructions h5 {
+    color: #555;
+    margin: 20px 0 10px 0;
+    font-size: 16px;
+}
+
+.password-instructions ul {
+    margin: 10px 0 15px 20px;
+    color: #666;
+}
+
+.password-instructions li {
+    margin-bottom: 5px;
+}
+
+.password-instructions p {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.password-input-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+/* スクロールバーのスタイル */
+.password-popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.password-popup-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.password-popup-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.password-popup-content::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* 無効状態のスタイル */
+.password-input-section input:disabled,
+.password-input-section button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.password-input-section .confirm-btn:disabled {
+    background: #ccc;
+}
+
+.password-input-section .confirm-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 .popup-content input {
     width: 100%;
     padding: 15px 20px;

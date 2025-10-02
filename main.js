@@ -29,19 +29,65 @@ function openUsernamePopup() {
 // パスワード入力ポップアップを開く
 function openPasswordPopup() {
     passwordPopupOverlay.classList.add('show');
-    // 少し遅延を入れてからフォーカスを当てる
+    
+    // スクロール位置をリセット
+    const passwordPopupContent = document.getElementById('password-popup-content');
+    passwordPopupContent.scrollTop = 0;
+    
+    // 入力フィールドを無効化
+    disablePasswordInput();
+    
+    // スクロールイベントリスナーを追加
+    passwordPopupContent.addEventListener('scroll', handlePasswordPopupScroll);
+    
+    // 少し遅延を入れてからフォーカスを当てる（スクロール後に有効になる）
     setTimeout(() => {
-        passwordInput.focus();
+        checkScrollAndEnableInput();
     }, 100);
     
-    // 現在の値があれば入力フィールドに設定
+    // 現在の値があれば入力フィールドに設定（有効化後に）
     if (storedPassword) {
-        passwordInput.value = storedPassword;
+        setTimeout(() => {
+            if (!passwordInput.disabled) {
+                passwordInput.value = storedPassword;
+            }
+        }, 200);
     }
     
     // パスワード表示チェックボックスをリセット
     document.getElementById('show-password').checked = false;
     passwordInput.type = 'password';
+}
+
+// パスワード入力フィールドを無効化
+function disablePasswordInput() {
+    passwordInput.disabled = true;
+    document.getElementById('show-password').disabled = true;
+    document.querySelector('.confirm-btn').disabled = true;
+}
+
+// パスワード入力フィールドを有効化
+function enablePasswordInput() {
+    passwordInput.disabled = false;
+    document.getElementById('show-password').disabled = false;
+    document.querySelector('.confirm-btn').disabled = false;
+    passwordInput.focus();
+}
+
+// スクロール検知とフィールド有効化
+function handlePasswordPopupScroll() {
+    checkScrollAndEnableInput();
+}
+
+function checkScrollAndEnableInput() {
+    const passwordPopupContent = document.getElementById('password-popup-content');
+    const scrollThreshold = 200; // 200px スクロールしたら有効化
+    
+    if (passwordPopupContent.scrollTop >= scrollThreshold) {
+        enablePasswordInput();
+        // イベントリスナーを削除（一度有効化したら再度無効化しない）
+        passwordPopupContent.removeEventListener('scroll', handlePasswordPopupScroll);
+    }
 }
 
 // ユーザーネームポップアップを閉じる
@@ -56,6 +102,10 @@ function closePasswordPopup() {
     passwordInput.value = '';
     document.getElementById('show-password').checked = false;
     passwordInput.type = 'password';
+    
+    // スクロールイベントリスナーを削除
+    const passwordPopupContent = document.getElementById('password-popup-content');
+    passwordPopupContent.removeEventListener('scroll', handlePasswordPopupScroll);
 }
 
 // ユーザーネームを確定する
@@ -216,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
             loginButton.style.transform = 'scale(1)';
         }, 150);
         
-        alert('入力内容がリセットされました！\n💡ヒント: 素早く3回クリックしてみてください...');
+        alert('入力内容がリセットされました！');
         
         // リセットモードを解除
         setTimeout(() => {

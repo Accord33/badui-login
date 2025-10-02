@@ -71,17 +71,56 @@
                 <h3>パスワードを入力</h3>
                 <button class="close-btn" onclick="closePasswordPopup()">×</button>
             </div>
-            <div class="popup-content">
-                <input type="password" id="password-input" placeholder="パスワードを入力してください">
-                <div class="password-options">
-                    <label class="toggle-password">
-                        <input type="checkbox" id="show-password" onchange="togglePasswordVisibility()">
-                        <span>パスワードを表示</span>
-                    </label>
-                </div>
-                <div class="popup-actions">
-                    <button class="cancel-btn" onclick="closePasswordPopup()">キャンセル</button>
-                    <button class="confirm-btn" onclick="confirmPassword()">確定</button>
+            <div class="popup-content password-popup-content" id="password-popup-content">
+                <div class="scroll-content">
+                    <div class="password-instructions">
+                        <h4>パスワード設定について</h4>
+                        <p>安全なパスワードを設定するために、以下の内容をご確認ください。</p>
+                        
+                        <h5>パスワードの要件</h5>
+                        <ul>
+                            <li>8文字以上の文字列</li>
+                            <li>大文字と小文字を含む</li>
+                            <li>数字を含む</li>
+                            <li>特殊文字を含む（推奨）</li>
+                        </ul>
+                        
+                        <h5>セキュリティについて</h5>
+                        <p>
+                            パスワードは暗号化されて保存されます。
+                            他のサービスと同じパスワードの使用は避けてください。
+                            定期的にパスワードを変更することをお勧めします。
+                        </p>
+                        
+                        <h5>パスワードのベストプラクティス</h5>
+                        <ul>
+                            <li>誕生日や名前など、推測しやすい情報は使用しない</li>
+                            <li>辞書に載っている単語は避ける</li>
+                            <li>複数の単語を組み合わせる</li>
+                            <li>パスフレーズの使用を検討する</li>
+                        </ul>
+                        
+                        <h5>2要素認証について</h5>
+                        <p>
+                            さらなるセキュリティ強化のため、2要素認証の設定をお勧めします。
+                            SMS、認証アプリ、またはハードウェアキーを使用できます。
+                        </p>
+                        
+                        <div class="password-input-section">
+                            <p style="font-weight: bold; color: #333; margin-bottom: 10px;">下にスクロールして入力フィールドを有効にしてください</p>
+                            <input type="password" id="password-input" placeholder="パスワードを入力してください" disabled>
+                            <div class="password-options">
+                                <label class="toggle-password">
+                                    <input type="checkbox" id="show-password" onchange="togglePasswordVisibility()" disabled>
+                                    <span>パスワードを表示</span>
+                                </label>
+                            </div>
+                            <div class="popup-actions">
+                                <button class="cancel-btn" onclick="closePasswordPopup()">キャンセル</button>
+                                <button class="confirm-btn" onclick="confirmPassword()" disabled>確定</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
