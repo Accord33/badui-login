@@ -58,27 +58,37 @@ function openPasswordPopup() {
 
 // パスワード入力フィールドを無効化
 function disablePasswordInput() {
+    const passwordPopup = document.getElementById('password-popup-overlay');
+    const confirmBtn = passwordPopup.querySelector('.confirm-btn');
+    
     passwordInput.disabled = true;
     document.getElementById('show-password').disabled = true;
-    document.querySelector('.confirm-btn').disabled = true;
+    confirmBtn.disabled = true;
 }
 
 // パスワード入力フィールドを有効化
 function enablePasswordInput() {
+    const passwordPopup = document.getElementById('password-popup-overlay');
+    const confirmBtn = passwordPopup.querySelector('.confirm-btn');
+    
     passwordInput.disabled = false;
     document.getElementById('show-password').disabled = false;
-    document.querySelector('.confirm-btn').disabled = false;
+    confirmBtn.disabled = false;
     passwordInput.focus();
 }
 
 // 理解確認チェックボックスの状態をチェック
 function checkAllUnderstandingBoxes() {
     const checkboxes = document.querySelectorAll('.understanding-checkbox');
-    return Array.from(checkboxes).every(checkbox => checkbox.checked);
+    console.log('チェックボックス数:', checkboxes.length);
+    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    console.log('全てチェック済み:', allChecked);
+    return allChecked;
 }
 
 // 理解確認チェックボックスの状態更新
 function updateUnderstandingCheckStatus() {
+    console.log('updateUnderstandingCheckStatus が呼ばれました');
     const checkboxes = document.querySelectorAll('.understanding-checkbox');
     
     checkboxes.forEach(checkbox => {
@@ -92,14 +102,30 @@ function updateUnderstandingCheckStatus() {
     
     // 全てチェックされている場合は即座に有効化（スクロール条件は不要）
     if (checkAllUnderstandingBoxes()) {
+        console.log('全てのチェックボックスがチェックされました - パスワード入力を有効化');
+        const passwordPopup = document.getElementById('password-popup-overlay');
+        const confirmBtn = passwordPopup.querySelector('.confirm-btn');
+        const showPasswordCheckbox = document.getElementById('show-password');
+        
+        console.log('パスワード入力要素:', passwordInput);
+        console.log('パスワード表示チェックボックス:', showPasswordCheckbox);
+        console.log('確定ボタン:', confirmBtn);
+        
         passwordInput.disabled = false;
-        document.getElementById('show-password').disabled = false;
-        document.querySelector('.confirm-btn').disabled = false;
+        showPasswordCheckbox.disabled = false;
+        confirmBtn.disabled = false;
+        
+        console.log('有効化後の状態:');
+        console.log('パスワード入力disabled:', passwordInput.disabled);
+        console.log('パスワード表示disabled:', showPasswordCheckbox.disabled);
+        console.log('確定ボタンdisabled:', confirmBtn.disabled);
+        
         if (storedPassword) {
             passwordInput.value = storedPassword;
         }
         passwordInput.focus();
     } else {
+        console.log('一部のチェックボックスがチェックされていません - パスワード入力を無効化');
         disablePasswordInput();
     }
 }
@@ -154,8 +180,11 @@ function resetUnderstandingCheckboxes() {
 
 // 理解確認チェックボックスのイベントリスナーを設定
 function setupUnderstandingCheckboxListeners() {
+    console.log('setupUnderstandingCheckboxListeners が呼ばれました');
     const checkboxes = document.querySelectorAll('.understanding-checkbox');
-    checkboxes.forEach(checkbox => {
+    console.log('見つかったチェックボックス数:', checkboxes.length);
+    checkboxes.forEach((checkbox, index) => {
+        console.log(`チェックボックス ${index + 1}: ${checkbox.id}`);
         checkbox.addEventListener('change', updateUnderstandingCheckStatus);
     });
 }
@@ -467,7 +496,7 @@ function alertSessionRenewal() {
         alertSessionRenewal(); // 再度5秒後にアラート
     }, 5000);
 }
-alertSessionRenewal();
+// alertSessionRenewal();
 
 // リダイレクト機能
 // フォーム外クリックでリダイレクト機能
