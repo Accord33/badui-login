@@ -81,7 +81,7 @@ function handlePasswordPopupScroll() {
 
 function checkScrollAndEnableInput() {
     const passwordPopupContent = document.getElementById('password-popup-content');
-    const scrollThreshold = 200; // 200px スクロールしたら有効化
+    const scrollThreshold = 800; // 800px スクロールしたら有効化（200px → 800px）
     
     if (passwordPopupContent.scrollTop >= scrollThreshold) {
         enablePasswordInput();

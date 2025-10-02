@@ -412,7 +412,7 @@ body {
 
 .scroll-content {
     padding: 25px;
-    min-height: 600px; /* スクロールが必要になる高さ */
+    min-height: 1500px; /* 大幅に高さを増加（600px → 1500px） */
 }
 
 .password-instructions {
