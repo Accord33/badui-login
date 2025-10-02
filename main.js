@@ -137,11 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loginButton.addEventListener('mouseenter', function() {
         if (isReset) return;
         
-        // 0.5秒後にリセットモードに変更
+        // 0.3秒後にリセットモードに変更
         hoverTimeout = setTimeout(() => {
             loginButton.classList.add('show-reset');
             isReset = true;
-        }, 500);
+        }, 300);
     });
     
     // ホバー終了
